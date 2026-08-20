@@ -1,5 +1,5 @@
 
-# Scenario 02 — Investigation Verdict
+# Scenario 02 — Business Email
 
 ## Verdict
 
