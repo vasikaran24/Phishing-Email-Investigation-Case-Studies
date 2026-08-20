@@ -105,3 +105,58 @@ Example scoring approach:
 
 This scoring model is intended for the lab and should be tuned before
 production use.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## sigma-rule.yaml
+
+title: Suspicious Microsoft 365 Credential Phishing Email
+id: 7f9d8b7e-7e4e-4b4f-9f31-scenario01
+status: experimental
+description: >
+  Detects email characteristics associated with a Microsoft 365
+  credential phishing scenario, including look-alike domains,
+  authentication failures, urgency, and credential verification URLs.
+
+logsource:
+  product: email
+  service: mail
+
+detection:
+
+  selection_domain:
+    sender_domain|contains:
+      - 'micros0ft'
+
+  selection_auth:
+    authentication_result|contains:
+      - 'spf=fail'
+      - 'dmarc=fail'
+
+  selection_reply:
+    reply_to_domain|exists: true
+
+  selection_subject:
+    subject|contains:
+      - 'password'
+      - 'expires'
+      - 'action required'
+      - 'verify'
+
+  selection_body:
+    body|contains:
+      - 'verify your credentials'
+      - 'password will expire'
+      - 'account will be suspended'
+
+  condition: selection_domain and (selection_auth or selection_subject or selection_body)
+
+falsepositives:
+  - Authorized security awareness simulations
+  - Internal phishing tests
+  - Legitimate domains containing similar strings
+
+level: high
+
+tags:
+  - attack.initial-access
+  - attack.t1566.002
