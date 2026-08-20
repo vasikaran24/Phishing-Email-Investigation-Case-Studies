@@ -10,49 +10,105 @@ development, and Sigma detection engineering.
 
 ---
 
-## Project Overview
+| Skill                        | Demonstrated |
+| ---------------------------- | ------------ |
+| Email Header Analysis        | ✅            |
+| Phishing Triage              | ✅            |
+| SPF Analysis                 | ✅            |
+| DKIM Analysis                | ✅            |
+| DMARC Analysis               | ✅            |
+| Sender Analysis              | ✅            |
+| Reply-To Analysis            | ✅            |
+| Domain Analysis              | ✅            |
+| URL Analysis                 | ✅            |
+| IOC Extraction               | ✅            |
+| Social Engineering Analysis  | ✅            |
+| Evidence Correlation         | ✅            |
+| Incident Verdict Development | ✅            |
+| Sigma Detection Engineering  | ✅            |
+| MITRE ATT&CK Mapping         | ✅            |
+| False Positive Analysis      | ✅            |
+| SOC Documentation            | ✅            |
 
-Phishing emails are one of the most common initial-access techniques
-used by attackers.
+Investigation Scenarios
+-------------------------
 
-This project demonstrates how a SOC analyst can investigate suspicious
-emails using multiple sources of evidence instead of relying on a
-single indicator.
+Scenario 01 — Microsoft 365 Credential Phishing
+----------------------------------------------
 
-The project currently contains two investigation scenarios covering
-different levels of phishing sophistication.
+Scenario Type
 
-The investigations follow this workflow:
+Credential phishing / brand impersonation
 
-```text
-Raw Email
-    |
-    v
-Initial Triage
-    |
-    v
-Email Header Analysis
-    |
-    v
-SPF / DKIM / DMARC Analysis
-    |
-    v
-Sender & Domain Analysis
-    |
-    v
-URL Analysis
-    |
-    v
-Social Engineering Analysis
-    |
-    v
-IOC Extraction
-    |
-    v
-Evidence Correlation
-    |
-    v
+Key Indicators
+Microsoft 365 impersonation
+Typosquatted domain
+SPF failure
+DKIM absent
+DMARC failure
+Reply-To mismatch
+Password expiration theme
+Account suspension threat
+Credential verification URL
 Verdict
-    |
-    v
-Sigma Detection
+PHISHING
+Confidence: HIGH
+MITRE ATT&CK
+T1566.002 — Phishing: Spearphishing Link
+Investigation
+
+See:
+
+scenarios/scenario-01/
+
+Scenario 02 — Suspicious Business Document Request
+-------------------------------------------------
+Scenario Type
+
+Business-themed suspicious email
+
+Key Indicators
+---------------
+
+Action-oriented subject
+Business deadline
+Document review request
+External URL
+Originating IP
+Business-sensitive information
+Authentication Results
+SPF  = PASS
+DKIM = PASS
+DMARC = PASS
+
+Unlike Scenario 01, this scenario does not contain obvious email
+authentication failures.
+
+This demonstrates an important investigation principle:
+
+Authentication success does not automatically mean an email is
+completely safe.
+
+Verdict
+SUSPICIOUS
+Confidence: MEDIUM
+
+Additional validation is required before classifying the message as
+confirmed phishing.
+
+Investigation
+| Indicator                 |  Scenario 01 |    Scenario 02 |
+| ------------------------- | -----------: | -------------: |
+| Brand impersonation       |            ✅ |              ❌ |
+| Typosquatting             |            ✅ |              ❌ |
+| SPF failure               |            ✅ |              ❌ |
+| DKIM failure/absence      |            ✅ |              ❌ |
+| DMARC failure             |            ✅ |              ❌ |
+| Reply-To mismatch         |            ✅ |              ❌ |
+| Urgency                   |            ✅ |              ✅ |
+| External URL              |            ✅ |              ✅ |
+| Business document request |            ❌ |              ✅ |
+| Credential request        |            ✅ |              ❌ |
+| Final verdict             | **PHISHING** | **SUSPICIOUS** |
+| Confidence                |     **HIGH** |     **MEDIUM** |
+
