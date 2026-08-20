@@ -1,0 +1,63 @@
+title: Suspicious Business Email With Urgent Document Request
+id: 4c2e7f91-8a31-4c5d-bb42-scenario02
+status: experimental
+
+description: >
+  Detects business-themed emails containing deadline-based urgency,
+  document-access requests, and authentication or infrastructure
+  anomalies. Intended for phishing triage and investigation support.
+
+author: Security Analyst
+date: 2026/08/20
+
+logsource:
+  product: email
+  service: mail
+
+detection:
+
+  selection_urgency:
+    subject|contains:
+      - 'action required'
+      - 'eod'
+      - 'deadline'
+      - 'review'
+
+  selection_document:
+    body|contains:
+      - 'access the document'
+      - 'review the document'
+      - 'okrs'
+      - 'budget allocations'
+      - 'kpis'
+
+  selection_authentication:
+    authentication_result|contains:
+      - 'spf=fail'
+      - 'dkim=fail'
+      - 'dmarc=fail'
+
+  selection_external_url:
+    body|contains:
+      - 'http://'
+      - 'https://'
+
+  selection_originating_ip:
+    originating_ip|exists: true
+
+  condition: >
+    selection_urgency and
+    selection_document and
+    selection_external_url and
+    selection_originating_ip
+
+falsepositives:
+  - Legitimate corporate OKR or business-document notifications
+  - Internal security-awareness exercises
+  - Legitimate deadline-driven business communications
+  - Automated document-sharing notifications
+
+level: medium
+
+tags:
+  - attack.initial-access
