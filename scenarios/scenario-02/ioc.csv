@@ -1,0 +1,6 @@
+type,value,source,description
+domain,company-partners.com,From/Return-Path,Sender domain observed in email headers
+ip,203.0.113.45,Received header,Mail relay IP observed in delivery path
+ip,185.143.223.67,X-Originating-IP,Originating IP requiring validation
+email,s.chen@company-partners.com,From header,Claimed sender address
+url,https://company-partners.com/okrs/q4-2024/review?auth=s.chen&ref=okr-review-2024,Email body,Document review URL requiring validation
