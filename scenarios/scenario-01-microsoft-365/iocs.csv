@@ -1,1 +1,9 @@
 
+
+| Type   | Value                                      | Source             | Description                                   |
+| ------ | ------------------------------------------ | ------------------ | --------------------------------------------- |
+| Domain | `micros0ft-verify.com`                     | From / Return-Path | Suspicious Microsoft look-alike domain        |
+| IP     | `103.224.182.251`                          | Received header    | External sending IP observed in email headers |
+| Email  | `no-reply@micros0ft-verify.com`            | From header        | Suspicious sender address                     |
+| Email  | `account-verify@webmail-support.net`       | Reply-To header    | Reply-To uses unrelated domain                |
+| URL    | `https://micros0ft-verify.com/o365/verify` | Email body         | Suspicious credential verification URL        |
