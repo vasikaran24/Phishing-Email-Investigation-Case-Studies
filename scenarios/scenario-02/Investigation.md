@@ -1,64 +1,291 @@
-# Scenario 02 Investigation
+# Scenario 02 — Business Email Investigation
 
-## Initial Observation
+## Case Overview
 
-The email appears to be a business communication from
-s.chen@company-partners.com regarding a Q4 OKR review.
+This case involves an email apparently sent by Sarah Chen,
+identified as VP of Operations at Company Partners Ltd.
 
-## Sender Analysis
+The email asks department heads to review a Q4 OKR document
+before an end-of-week deadline.
 
-The From address and Return-Path both use:
+At first glance, the message appears to be a normal business
+communication. I therefore examined the sender, authentication
+results, mail flow, originating IP, URL, and social-engineering
+characteristics before reaching a verdict.
 
-company-partners.com
+---
 
-No obvious sender-domain mismatch was identified.
+## 1. Sender Analysis
 
-## Authentication Analysis
+### From
 
-SPF: PASS
-DKIM: PASS
-DMARC: PASS
+`"Sarah Chen" <s.chen@company-partners.com>`
 
-These results indicate that the supplied authentication checks
-passed for the sending domain.
+### Return-Path
 
-## Header Analysis
+`s.chen@company-partners.com`
 
-X-Originating-IP:
+The From address and Return-Path use the same domain.
 
-185.143.223.67
+I did not identify an obvious sender/Return-Path mismatch.
 
-This requires additional investigation because the supplied
-headers do not establish whether this IP belongs to authorized
-Company Partners infrastructure.
+### Initial Assessment
 
-## URL Analysis
+No direct evidence of sender spoofing was identified from these
+fields alone.
+
+---
+
+## 2. Email Authentication Analysis
+
+### SPF
+
+Result:
+
+`PASS`
+
+The authentication result states that `203.0.113.45` is
+authorized to send mail for `company-partners.com`.
+
+### DKIM
+
+Result:
+
+`PASS`
+
+The DKIM signature was successfully verified for:
+
+`company-partners.com`
+
+### DMARC
+
+Result:
+
+`PASS`
+
+The message passed DMARC authentication.
+
+### Analyst Assessment
+
+The authentication results are significantly different from a
+typical spoofed phishing email.
+
+SPF, DKIM, and DMARC all passed, so there is no authentication
+failure that would independently indicate sender spoofing.
+
+However, successful authentication does not automatically prove
+that the message itself is safe.
+
+---
+
+## 3. Mail Flow Analysis
+
+The headers show the following mail path:
+
+`EXCH-CAS-02.corp.local`
+
+↓
+
+`relay.company-partners.com`
+
+↓
+
+`mx.infoseclabs.io`
+
+↓
+
+`mail.infoseclabs.io`
+
+The headers indicate that the message passed through infrastructure
+associated with `company-partners.com`.
+
+The following originating IP was also observed:
+
+`185.143.223.67`
+
+This IP requires additional validation.
+
+The available email headers alone do not establish whether this IP
+belongs to authorized corporate infrastructure.
+
+---
+
+## 4. Subject Analysis
+
+Subject:
+
+`Q4 OKR Review - Action Required by EOD Friday`
+
+The subject contains an action-oriented request and a deadline.
+
+The phrase:
+
+`Action Required`
+
+combined with:
+
+`EOD Friday`
+
+creates pressure for the recipient to act quickly.
+
+This is a potential social-engineering indicator.
+
+However, business emails can legitimately contain deadlines, so this
+indicator should not be treated as proof of phishing.
+
+---
+
+## 5. Body Analysis
+
+The sender claims that the recipient needs to review:
+
+- Q4 OKRs
+- KPIs
+- Budget allocations
+
+The business context appears plausible.
+
+The message does not request a password directly and does not contain
+an obvious grammatical or formatting problem.
+
+However, the recipient is encouraged to access an external document
+through a supplied link.
+
+This makes the URL an important part of the investigation.
+
+---
+
+## 6. URL Analysis
 
 The email contains:
 
-https://company-partners.com/okrs/q4-2024/review
+`https://company-partners.com/okrs/q4-2024/review?auth=s.chen&ref=okr-review-2024`
 
-The URL uses the same domain as the sender.
+The URL uses the same domain as the sender:
 
-The URL should be validated in an authorized isolated environment.
+`company-partners.com`
 
-## Social Engineering Analysis
+This is not an obvious look-alike domain.
 
-The email uses an EOD Friday deadline to encourage timely action.
+However, the URL contains authentication-related parameters:
 
-This is a potential social-engineering indicator but is not
-sufficient by itself to classify the email as phishing.
+`auth=s.chen`
 
-## Analyst Assessment
+and:
 
-The email contains both legitimate and suspicious characteristics.
+`ref=okr-review-2024`
 
-No clear spoofing or authentication failure was identified.
+The destination should therefore be validated in an authorized,
+isolated analysis environment before it is considered safe.
 
-## Verdict
+---
 
-SUSPICIOUS — REQUIRES FURTHER INVESTIGATION
+## 7. Social Engineering Indicators
 
-## Confidence
+The email contains:
 
-Medium
+- `Action Required`
+- `EOD Friday deadline`
+- Business-critical KPI information
+- Budget information
+- A document-access request
+
+These characteristics can encourage a recipient to act without
+independently verifying the request.
+
+At this stage, they are supporting indicators rather than proof
+of malicious activity.
+
+---
+
+## 8. Indicators of Compromise / Observables
+
+| Type | Value | Source | Assessment |
+|---|---|---|---|
+| Domain | company-partners.com | From / Return-Path | Sender domain |
+| IP | 203.0.113.45 | Received header | Mail relay |
+| IP | 185.143.223.67 | X-Originating-IP | Requires validation |
+| Email | s.chen@company-partners.com | From header | Claimed sender |
+| URL | company-partners.com/okrs/q4-2024/review | Email body | Requires validation |
+
+---
+
+## 9. Investigation Findings
+
+### Positive / Legitimate Indicators
+
+- SPF passed.
+- DKIM passed.
+- DMARC passed.
+- From and Return-Path match.
+- Sender and URL use the same domain.
+- Business context is plausible.
+- Microsoft Outlook is identified as the mail client.
+
+### Suspicious Indicators
+
+- The message creates deadline pressure.
+- The email requests access to a business document.
+- The originating IP requires validation.
+- The supplied URL has authentication-related parameters.
+
+---
+
+## 10. Analyst Assessment
+
+Based only on the supplied evidence, I would not classify this email
+as confirmed phishing.
+
+The authentication controls passed and there is no obvious
+look-alike sender domain or Reply-To mismatch.
+
+However, the originating IP and destination URL require additional
+investigation.
+
+The message should therefore remain in a suspicious/unconfirmed state
+until those indicators are validated.
+
+---
+
+## Final Verdict
+
+**SUSPICIOUS — REQUIRES FURTHER INVESTIGATION**
+
+### Confidence
+
+**Medium**
+
+### Primary Reason
+
+There are some social-engineering and URL-related concerns, but the
+available authentication evidence does not support a high-confidence
+phishing verdict.
+
+---
+
+## Recommended SOC Actions
+
+1. Validate `185.143.223.67`.
+2. Confirm whether Sarah Chen actually sent the email.
+3. Investigate the destination URL in an isolated environment.
+4. Search the SIEM for similar messages.
+5. Check whether other employees received the same email.
+6. Review authentication activity associated with the sender.
+7. Review DNS/proxy logs for access to the URL.
+8. Compare the sender's normal communication pattern with this message.
+
+---
+
+## Analyst Conclusion
+
+This case demonstrates why phishing investigations should not depend
+on a single indicator.
+
+SPF, DKIM, and DMARC passing does not automatically make an email safe.
+
+Likewise, an urgent deadline does not automatically make an email
+malicious.
+
+A SOC analyst should correlate authentication results, sender identity,
+mail flow, infrastructure, URLs, message context, and additional
+security telemetry before assigning a final verdict.
