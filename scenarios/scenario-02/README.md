@@ -1,50 +1,120 @@
+# Scenario 02 — Business Email Phishing Investigation
 
-# Scenario 02 — Business Email
+## Overview
 
-## Verdict
+This case study documents the investigation of a business-themed email
+that claims to be from **Sarah Chen, VP of Operations at Company
+Partners Ltd.**
 
-SUSPICIOUS — REQUIRES FURTHER INVESTIGATION
+The email asks department heads to review a Q4 OKR document before an
+end-of-week deadline.
 
-## Confidence
+At first glance, the message appears to be a normal business email.
+However, the presence of an external document link, deadline-based
+urgency, and an unusual originating IP makes further investigation
+necessary.
 
-Medium
+This investigation demonstrates how a SOC analyst can evaluate a
+potential phishing email using email headers, authentication results,
+sender information, URLs, and social-engineering indicators.
 
-## Summary
+> **Source:** InfoSecLabs training scenario  
+> **Purpose:** Educational / defensive security analysis  
+> **Data classification:** Sanitized training data
 
-The email presents itself as a business communication from Sarah Chen
-at Company Partners Ltd regarding a Q4 OKR review.
+---
 
-Unlike Scenario 01, the email does not contain obvious authentication
-failures. SPF, DKIM, and DMARC all pass, and the sender and URL use the
-same domain.
+## Investigation Objective
 
-However, the originating IP and the document-access request require
-additional validation before the message can be considered trusted.
+The primary objective of this investigation is to determine whether the
+email represents a legitimate business communication, a suspicious
+message, or a phishing attempt.
 
-## Positive Legitimacy Indicators
+The investigation focuses on:
 
-- SPF authentication passed
-- DKIM authentication passed
-- DMARC authentication passed
-- From and Return-Path use the same domain
-- No suspicious Reply-To address
-- Microsoft Outlook/Exchange indicators are present
-- URL domain matches the sender domain
-- Business context is plausible
+1. Validating the sender identity.
+2. Examining the email delivery path.
+3. Reviewing SPF, DKIM, and DMARC results.
+4. Checking for sender and domain inconsistencies.
+5. Investigating the originating IP address.
+6. Analyzing the URL contained in the email.
+7. Identifying social-engineering techniques.
+8. Extracting relevant security observables.
+9. Determining the appropriate analyst verdict.
+10. Identifying additional investigation steps required before
+   considering the email trusted.
 
-## Investigation Concerns
+---
 
-- X-Originating-IP requires validation
-- Email creates deadline pressure
-- Message requests access to an important business document
-- URL contains authentication-related parameters
-- Sender identity should be independently verified
+## Investigation Scope
 
-## Recommended Analyst Actions
+The following email components were reviewed:
 
-1. Validate the originating IP against known corporate infrastructure.
-2. Verify whether Sarah Chen actually sent the message.
-3. Inspect the destination URL in an authorized isolated environment.
-4. Check authentication and web-proxy logs for the recipient.
-5. Search for similar messages sent to other users.
-6. Review any authentication activity associated with the sender.
+- Email headers
+- Return-Path
+- From address
+- Received headers
+- Authentication-Results
+- SPF
+- DKIM
+- DMARC
+- Subject
+- Message body
+- Embedded URL
+- X-Originating-IP
+- Mail client information
+- Social-engineering characteristics
+
+---
+
+## Email Summary
+
+| Field | Value |
+|---|---|
+| Sender | s.chen@company-partners.com |
+| Display Name | Sarah Chen |
+| Claimed Role | VP of Operations |
+| Recipient | analyst@infoseclabs.io |
+| Subject | Q4 OKR Review - Action Required by EOD Friday |
+| SPF | PASS |
+| DKIM | PASS |
+| DMARC | PASS |
+| X-Originating-IP | 185.143.223.67 |
+| Mail Client | Microsoft Outlook 16.0 |
+| URL Domain | company-partners.com |
+
+---
+
+## Investigation Methodology
+
+The investigation follows a basic SOC email-triage workflow:
+
+```text
+Email Received
+      |
+      v
+Header Analysis
+      |
+      v
+Sender Validation
+      |
+      v
+SPF / DKIM / DMARC Analysis
+      |
+      v
+Mail-Flow Analysis
+      |
+      v
+URL Analysis
+      |
+      v
+Social-Engineering Analysis
+      |
+      v
+IOC Extraction
+      |
+      v
+Evidence Correlation
+      |
+      v
+Final Verdict
