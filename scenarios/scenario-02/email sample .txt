@@ -1,0 +1,80 @@
+============================================================
+SCENARIO 02 — RAW EMAIL SAMPLE
+============================================================
+
+Source:
+InfoSecLabs training scenario
+
+Purpose:
+Educational phishing email investigation
+
+Status:
+Sanitized training data
+
+============================================================
+
+Return-Path: <s.chen@company-partners.com>
+Delivered-To: analyst@infoseclabs.io
+Received: from mx.infoseclabs.io ([10.0.0.1])
+	by mail.infoseclabs.io with LMTP id Y4z7P0tX3A
+	for <analyst@infoseclabs.io>; Mon, 22 Jan 2024 11:28:51 -0500
+Received: from relay.company-partners.com ([203.0.113.45])
+	by mx.infoseclabs.io with ESMTPS id a8b9c0d1-e2f3-4a5b-6c7d-890123defabc
+	for <analyst@infoseclabs.io>; Mon, 22 Jan 2024 11:28:49 -0500
+Received: from [10.1.1.50] (unknown [203.0.113.45])
+	by relay.company-partners.com (Postfix) with ESMTPSA id E5F6A7B8C9
+	for <analyst@infoseclabs.io>; Mon, 22 Jan 2024 16:28:44 +0000
+Received: from EXCH-CAS-02.corp.local ([10.1.1.100])
+	by relay.company-partners.com with ESMTPS id F6A7B8C9D0
+	(envelope-from <s.chen@company-partners.com>)
+	for <analyst@infoseclabs.io>; Mon, 22 Jan 2024 16:28:43 +0000
+Authentication-Results: mx.infoseclabs.io;
+	spf=pass (domain of company-partners.com designates 203.0.113.45 as permitted sender) smtp.mailfrom=company-partners.com;
+	dkim=pass (signature verified) header.d=company-partners.com;
+	dmarc=pass (p=QUARANTINE sp=QUARANTINE)
+From: "Sarah Chen" <s.chen@company-partners.com>
+To: analyst@infoseclabs.io
+Subject: Q4 OKR Review - Action Required by EOD Friday
+Date: Mon, 22 Jan 2024 16:28:43 +0000
+Message-ID: <SN6PR05MB4321A1B2C3D4E5F6A7B8C9D0E1F2G3H4@SN6PR05MB4321.namprd05.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="----=_NextPart_004_007E_05G3C9D5.E6F7A8B9"
+X-Originating-IP: [185.143.223.67]
+X-Mailer: Microsoft Outlook 16.0
+X-MS-Exchange-Organization-AuthSource: EXCH-CAS-02.corp.local
+X-MS-Exchange-Organization-AuthAs: Anonymous
+
+------=_NextPart_004_007E_05G3C9D5.E6F7A8B9
+Content-Type: text/plain; charset="UTF-8"
+
+Hi Team,
+
+I hope everyone had a great weekend. Following our Q4 planning session last week, I need all department heads to review the updated OKR document before our EOD Friday deadline.
+
+The document contains the finalized KPIs and budget allocations for each team. Please review carefully as these numbers will be locked in for the quarter.
+
+Access the document here:
+https://company-partners.com/okrs/q4-2024/review?auth=s.chen&ref=okr-review-2024
+
+If you have any questions or need clarification on any of the metrics, please don't hesitate to reach out directly.
+
+Looking forward to your feedback.
+
+Best,
+Sarah Chen
+VP of Operations
+Company Partners Ltd
+Office: +1 (415) 555-0142
+s.chen@company-partners.com
+
+------=_NextPart_004_007E_05G3C9D5.E6F7A8B9
+Content-Type: text/html; charset="UTF-8"
+
+<html><body style="font-family:Calibri,Arial,sans-serif;">
+<p>Hi Team,</p>
+<p>I hope everyone had a great weekend. Following our Q4 planning session last week, I need all department heads to review the updated OKR document before our <strong>EOD Friday deadline</strong>.</p>
+<p>The document contains the finalized KPIs and budget allocations for each team. Please review carefully as these numbers will be locked in for the quarter.</p>
+<p><a href="https://company-partners.com/okrs/q4-2024/review?auth=s.chen&ref=okr-review-2024">Access the Q4 OKR Document</a></p>
+<p>If you have any questions or need clarification on any of the metrics, please don't hesitate to reach out directly.</p>
+<p>Best,<br>Sarah Chen<br>VP of Operations<br>Company Partners Ltd<br>Office: +1 (415) 555-0142</p>
+</body></html>
